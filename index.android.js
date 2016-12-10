@@ -6,10 +6,12 @@
 
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   AppRegistry,
   StyleSheet,
   View,
 } from 'react-native';
+import { Provider } from 'react-redux';
 
 import {
   DailyTotalDisplay,
@@ -17,37 +19,46 @@ import {
   DailyEntriesList,
   ButtonToolbar,
 } from './src';
+import configureStore from './configureStore';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    alignItems: 'stretch',
+    backgroundColor: 'white',
   },
 });
 
+const store = configureStore();
+
+(async () => {
+  try {
+    const data = await AsyncStorage.getItem('AppData');
+    if (data) {
+      store.dispatch({ type: 'HYDRATE', payload: JSON.parse(data), });
+    }
+  } catch (e) {
+    console.warn('Error hydrating', e);
+    throw e;
+  }
+})();
+
 export default class CalorieTapAndroid extends Component {
+  componentWillUnmount() {
+    console.log('BYEBYE');
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <View>
+      <Provider store={store}>
+        <View style={styles.container}>
           <DailyTotalDisplay />
           <Divider />
-          <DailyEntriesList />
+          <DailyEntriesList style={{ flex: 1, }} />
           <ButtonToolbar />
         </View>
-      </View>
+      </Provider>
     );
   }
 }

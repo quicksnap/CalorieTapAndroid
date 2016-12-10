@@ -8,6 +8,13 @@
     }
   },
 
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+
   "globals": {
     "_": true,
   },
@@ -39,7 +46,7 @@
     "no-caller": 2,
     "no-class-assign": 2,
     "no-cond-assign": 2,
-    "no-console": 1,
+    "no-console": 0,
     "no-const-assign": 2,
     "no-control-regex": 2,
     "no-debugger": 1,
