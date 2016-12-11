@@ -6,7 +6,6 @@ import {
   Button,
   ListView,
   TextInput,
-  Keyboard,
   Alert,
 } from 'react-native';
 
@@ -14,6 +13,18 @@ import {
   totalSelector,
   entriesSelector,
 } from './selectors';
+
+function formatAMPM(timestamp) {
+  let date = new Date(timestamp);
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  let strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
 
 @connect(state => ({
   total: totalSelector(state),
@@ -101,7 +112,6 @@ class DailyEntriesList extends Component {
   renderRow(rowData) {
     return (
       <View style={{
-        // alignSelf: 'flex-end',
         flexDirection: 'row',
         marginRight: 20,
         marginTop: 20,
@@ -116,7 +126,7 @@ class DailyEntriesList extends Component {
           <Text style={{
             textAlign: 'right',
           }}>
-            9:37 AM
+            {formatAMPM(rowData.timestamp)}
           </Text>
         </View>
 
@@ -177,34 +187,7 @@ class ButtonToolbar extends Component {
 
   state = {
     isEntryActive: false,
-    kbSize: 0,
-  }
-
-  componentWillMount() {
-    this.keyboardDidShowListener =
-      Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this));
-
-    this.keyboardDidHideListener =
-      Keyboard.addListener('keyboardDidHide', this._keyboardDidHide.bind(this));
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
-  _keyboardDidShow(e) {
-    this.setState({
-      isEntryActive: true,
-      kbSize: e.endCoordinates.height,
-    });
-  }
-
-  _keyboardDidHide() {
-    this.setState({
-      isEntryActive: false,
-      text: null,
-    });
+    text: null,
   }
 
   render() {
@@ -258,7 +241,7 @@ class ButtonToolbar extends Component {
           <Button
             onPress={() => this.setState({ isEntryActive: false, })}
             title='Nevermind'
-            color='grey'
+            color='red'
             accessibilityLabel='Nevermind'
           />
           <Button
@@ -269,7 +252,7 @@ class ButtonToolbar extends Component {
                 payload: {
                   amount: parseInt(this.state.text, 10),
                   note: 'I am a thing!',
-                  date: new Date(),
+                  timestamp: new Date().getTime(),
                 }
               });
               this.setState({
@@ -297,7 +280,11 @@ class ButtonToolbar extends Component {
         {this.state.isEntryActive &&
           <TextInput
             autoFocus={true}
-            style={{ height: 40 }}
+            style={{
+              height: 40,
+              textAlign: 'right',
+              fontSize: 18,
+            }}
             placeholder='Enter Calories'
             keyboardType='numeric'
             onChangeText={text => this.setState({ text })}

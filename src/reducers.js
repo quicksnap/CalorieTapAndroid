@@ -1,25 +1,25 @@
 const initialState = {
   entries: [
-    {
-      timestamp: new Date(),
-      note: 'some note',
-      amount: 342,
-    },
-    {
-      timestamp: new Date(),
-      note: 'some note',
-      amount: 12,
-    },
-    {
-      timestamp: new Date(),
-      note: 'some note',
-      amount: 4,
-    },
-    {
-      timestamp: new Date(),
-      note: 'some note',
-      amount: 1209,
-    },
+    // {
+    //   timestamp: new Date().getTime(),
+    //   note: 'some note',
+    //   amount: 342,
+    // },
+    // {
+    //   timestamp: new Date().getTime(),
+    //   note: 'some note',
+    //   amount: 12,
+    // },
+    // {
+    //   timestamp: new Date().getTime(),
+    //   note: 'some note',
+    //   amount: 4,
+    // },
+    // {
+    //   timestamp: new Date().getTime(),
+    //   note: 'some note',
+    //   amount: 1209,
+    // },
   ],
 };
 
