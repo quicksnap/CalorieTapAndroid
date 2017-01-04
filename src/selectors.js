@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 export const entriesSelector = state => state.entries;
+export const isEntryModalOpen = state => state.isEntryModalOpen;
 
 export const totalSelector = createSelector(
   entriesSelector,

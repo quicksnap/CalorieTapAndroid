@@ -15,7 +15,6 @@ export default class ButtonToolbar extends Component {
   }
 
   state = {
-    isEntryActive: false,
     text: null,
   }
 
@@ -29,9 +28,14 @@ export default class ButtonToolbar extends Component {
       height: 70,
     };
 
-    let buttonSet;
-    if (!this.state.isEntryActive) {
-      buttonSet = (
+    return (
+      <View
+        behavior='height'
+        style={{
+          ...this.props.style,
+          alignSelf: 'stretch',
+        }}>
+
         <View style={buttonViewStyle}>
           <Button
             onPress={() => {
@@ -56,72 +60,13 @@ export default class ButtonToolbar extends Component {
           />
           <Button
             onPress={() => {
-              this.setState({ isEntryActive: true, });
+              this.props.dispatch({ type: 'SHOW_MODAL' });
             }}
             title='Add Entry'
             color='green'
             accessibilityLabel='Add Entry'
           />
         </View>
-      );
-    } else {
-      buttonSet = (
-        <View style={buttonViewStyle}>
-          <Button
-            onPress={() => this.setState({ isEntryActive: false, })}
-            title='Nevermind'
-            color='red'
-            accessibilityLabel='Nevermind'
-          />
-          <Button
-            disabled={!this.state.text}
-            onPress={() => {
-              this.props.dispatch({
-                type: 'ADD_ENTRY',
-                payload: {
-                  amount: parseInt(this.state.text, 10),
-                  note: 'I am a thing!',
-                  timestamp: new Date().getTime(),
-                }
-              });
-              this.setState({
-                isEntryActive: false,
-                text: null,
-              });
-            }}
-            title='Yum!'
-            color='blue'
-            accessibilityLabel='Yum!'
-          />
-
-        </View>
-      );
-    }
-
-    return (
-      <View
-        behavior='height'
-        style={{
-          ...this.props.style,
-          alignSelf: 'stretch',
-        }}>
-
-        {this.state.isEntryActive &&
-          <TextInput
-            autoFocus={true}
-            style={{
-              height: 40,
-              textAlign: 'right',
-              fontSize: 18,
-            }}
-            placeholder='Enter Calories'
-            keyboardType='numeric'
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
-          />
-        }
-
-        {buttonSet}
 
       </View>
     );

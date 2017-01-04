@@ -1,33 +1,16 @@
 const initialState = {
-  entries: [
-    // {
-    //   timestamp: new Date().getTime(),
-    //   note: 'some note',
-    //   amount: 342,
-    // },
-    // {
-    //   timestamp: new Date().getTime(),
-    //   note: 'some note',
-    //   amount: 12,
-    // },
-    // {
-    //   timestamp: new Date().getTime(),
-    //   note: 'some note',
-    //   amount: 4,
-    // },
-    // {
-    //   timestamp: new Date().getTime(),
-    //   note: 'some note',
-    //   amount: 1209,
-    // },
-  ],
+  entries: [],
+  isEntryModalOpen: false,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
 
     case 'HYDRATE':
-      return action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
 
     case 'ADD_ENTRY':
       return {
@@ -42,6 +25,18 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         entries: [],
+      };
+
+    case 'SHOW_MODAL':
+      return {
+        ...state,
+        isEntryModalOpen: true,
+      };
+
+    case 'HIDE_MODAL':
+      return {
+        ...state,
+        isEntryModalOpen: false,
       };
 
     default:

@@ -18,6 +18,7 @@ import {
   Divider,
   DailyEntriesList,
   ButtonToolbar,
+  EntryModal,
 } from './src';
 import configureStore from './configureStore';
 
@@ -57,6 +58,7 @@ export default class CalorieTapAndroid extends Component {
           <Divider />
           <DailyEntriesList style={{ flex: 1, }} />
           <ButtonToolbar />
+          <EntryModal />
         </View>
       </Provider>
     );
